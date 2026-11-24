@@ -95,4 +95,69 @@ public class PessoaDAO {
         }
     }
 }
+    public Cliente consultarCliente(int id)
+        throws ClassNotFoundException, SQLException {
+
+    String sql = "SELECT pessoa.id, pessoa.nome, "
+                + "cliente.curso, cliente.telefone "
+                + "FROM pessoa "
+                + "INNER JOIN cliente ON pessoa.id = cliente.id "
+                + "WHERE pessoa.id = ?";
+
+    try (Connection con = Conexao.getConexaoMySQL();
+         PreparedStatement comando = con.prepareStatement(sql)) {
+
+        comando.setInt(1, id);
+
+        try (ResultSet rs = comando.executeQuery()) {
+
+            if (rs.next()) {
+
+                Cliente cliente = new Cliente();
+
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setCurso(rs.getString("curso"));
+                cliente.setTelefone(rs.getString("telefone"));
+
+                return cliente;
+            }
+        }
+    }
+
+    return null;
+}
+    public Usuario consultarUsuario(int id)
+        throws ClassNotFoundException, SQLException {
+
+    String sql = "SELECT pessoa.id, pessoa.nome, "
+                + "usuario.email, usuario.login, usuario.senha "
+                + "FROM pessoa "
+                + "INNER JOIN usuario ON pessoa.id = usuario.id "
+                + "WHERE pessoa.id = ?";
+
+    try (Connection con = Conexao.getConexaoMySQL();
+         PreparedStatement comando = con.prepareStatement(sql)) {
+
+        comando.setInt(1, id);
+
+        try (ResultSet rs = comando.executeQuery()) {
+
+            if (rs.next()) {
+
+                Usuario usuario = new Usuario();
+
+                usuario.setId(rs.getInt("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setLogin(rs.getString("login"));
+                usuario.setSenha(rs.getString("senha"));
+
+                return usuario;
+            }
+        }
+    }
+
+    return null;
+}
 }
