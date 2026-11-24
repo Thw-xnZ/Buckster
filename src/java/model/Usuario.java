@@ -10,6 +10,7 @@ package model;
  */
 public class Usuario extends Pessoa{
     private String email;
+    private String login;
     private String senha;
     
     public void setEmail(String email){
@@ -18,6 +19,14 @@ public class Usuario extends Pessoa{
     
     public String getEmail(){
         return email;
+    }
+    
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getLogin() {
+        return login;
     }
     
     public void setSenha(String senha){

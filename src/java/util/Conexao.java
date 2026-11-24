@@ -15,7 +15,7 @@ public class Conexao {
     
     public static Connection getConexaoMySQL() throws ClassNotFoundException, SQLException {
         String DRIVER = "com.mysql.cj.jdbc.Driver";
-        String URL = "jdbc:mysql://localhost:3306/aula_ioo";
+        String URL = "jdbc:mysql://localhost:3306/buckster_ioo";
         String USER = "root";
         String PASSWORD = "";
         Class.forName(DRIVER);
