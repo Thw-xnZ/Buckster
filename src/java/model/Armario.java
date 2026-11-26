@@ -10,6 +10,7 @@ import enums.StatusArmario;
  */
 public class Armario {
     private int id;
+    private String descricao;
     private StatusArmario status;
     private Cliente cliente;
     
@@ -19,6 +20,14 @@ public class Armario {
    
    public int getId(){
        return id;
+   }
+   
+   public void setDescricao (String descricao){
+       this.descricao = descricao;
+   }
+   
+   public String getDescricao(){
+       return descricao;
    }
    
    public void setStatus(StatusArmario status){

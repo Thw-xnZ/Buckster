@@ -4,6 +4,7 @@
  */
 package model;
 import enums.StatusReserva;
+import java.time.LocalDate;
 /**
  *
  * @author pablo
@@ -14,6 +15,8 @@ public class OrdemReserva {
     private Armario armario;
     private Usuario usuario;
     private StatusReserva status;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     
     public void setId(int id){
         this.id = id;
@@ -53,6 +56,22 @@ public class OrdemReserva {
     
     public StatusReserva getStatus(){
         return status;
+    }
+    
+    public void setDataInicio(LocalDate dataInicio){
+        this.dataInicio = dataInicio;
+    }
+    
+    public LocalDate getDataInicio(){
+        return dataInicio;
+    }
+    
+    public void setDataFim(LocalDate dataFim){
+        this.dataFim = dataFim;
+    }
+    
+    public LocalDate getDataFim(){
+        return dataFim;
     }
     
     public void efetuarReserva(){

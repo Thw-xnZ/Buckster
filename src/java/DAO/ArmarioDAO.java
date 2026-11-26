@@ -23,58 +23,131 @@ public class ArmarioDAO {
     
     public void cadastrar(Armario a) throws ClassNotFoundException, SQLException {
         Connection con = Conexao.getConexaoMySQL();
-        PreparedStatement comando = con.prepareStatement("insert into armarios (status, cliente) values (?,?)");
-        comando.setObject(1, a.getStatus());
-        comando.setObject(2, a.getCliente());
-        comando.execute();
+        
+        PreparedStatement comando = con.prepareStatement("insert into armarios (descricao, status, cliente_id) values (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        
+        comando.setString(1, a.getDescricao());
+        comando.setString(2, a.getStatus().name());
+        
+        if (a.getCliente() != null){
+            comando.setInt(3, a.getCliente().getId());
+        } else {
+            comando.setNull(3, java.sql.Types.INTEGER);
+        }
+        
+        comando.executeUpdate();
+        
+        ResultSet rs = comando.getGeneratedKeys();
+        
+        if (rs.next()){
+            a.setId(rs.getInt(1));
+        }
+        
+        rs.close();
+        comando.close();
         con.close();
     }
     
     public void deletar(Armario a) throws ClassNotFoundException, SQLException {
         Connection con = Conexao.getConexaoMySQL();
+        
         PreparedStatement comando = con.prepareStatement("delete from armarios where id = ?");
+        
         comando.setInt(1, a.getId());
         comando.execute();
+        
+        comando.close();
         con.close();
     }
     
-    public void atuualizar(Armario a) throws ClassNotFoundException, SQLException {
+    public void atualizar(Armario a) throws ClassNotFoundException, SQLException {
         Connection con = Conexao.getConexaoMySQL();
-        PreparedStatement comando = con.prepareStatement("update armarios set status = ?, cliente = ?, where id = ?");
-        comando.setObject(1, a.getStatus());
-        comando.setObject(2, a.getCliente());
-        comando.setInt(3, a.getId());
-        comando.execute();
+        
+        PreparedStatement comando = con.prepareStatement("update armarios set descricao = ?, status = ?, cliente_id = ? where id = ?");
+        
+        comando.setString(1, a.getDescricao());
+        comando.setString(2, a.getStatus().name());
+        
+        if (a.getCliente() != null){
+            comando.setInt(3, a.getCliente().getId());
+        } else {
+            comando.setNull(3, java.sql.Types.INTEGER);
+        }
+        
+        comando.setInt(4, a.getId());
+        
+        comando.executeUpdate();
+        
+        comando.close();
         con.close();
     }
     
     public Armario consultarById(Armario a) throws ClassNotFoundException, SQLException {
         Connection con = Conexao.getConexaoMySQL();
+        
         PreparedStatement comando = con.prepareStatement("select * from armarios where id = ?");
+        
         comando.setInt(1, a.getId());
+        
         ResultSet rs = comando.executeQuery();
-        Armario arm = new Armario();
+        
         if (rs.next()){
+            Armario arm = new Armario();
+            
             arm.setId(rs.getInt("id"));
-            arm.setStatus((StatusArmario) rs.getObject("status"));
-            arm.setCliente((Cliente) rs.getObject("cliente"));
-        }        
-        return arm;
+            arm.setDescricao(rs.getString("descricao"));
+            arm.setStatus(StatusArmario.valueOf(rs.getString("status")));
+            
+            int clienteId = rs.getInt("cliente_id");
+            
+            if (!rs.wasNull()){
+                PessoaDAO pessoaDAO = new PessoaDAO();
+                Cliente cliente = pessoaDAO.consultarCliente(clienteId);
+                
+                arm.setCliente(cliente);
+            }
+            
+            rs.close();
+            comando.close();
+            con.close();
+        }
+        rs.close();
+        comando.close();
+        con.close();
+        
+        return null;
     }
     
     public List<Armario> consultarTodos() throws ClassNotFoundException, SQLException {
         Connection con = Conexao.getConexaoMySQL();
+        
         PreparedStatement comando = con.prepareStatement("select * from armarios");
+        
         ResultSet rs = comando.executeQuery();
                 
         List<Armario> larm = new ArrayList<Armario>();
         while(rs.next()){
             Armario arm = new Armario();
+            
             arm.setId(rs.getInt("id"));
-            arm.setStatus((StatusArmario) rs.getObject("status"));
-            arm.setCliente((Cliente) rs.getObject("cliente"));
+            arm.setDescricao(rs.getString("descricao"));
+            arm.setStatus(StatusArmario.valueOf(rs.getString("status")));
+            
+            int clienteId = rs.getInt("cliente_id");
+            
+            if(!rs.wasNull()){
+                PessoaDAO pessoaDAO = new PessoaDAO();
+                Cliente cliente = pessoaDAO.consultarCliente(clienteId);
+                
+                arm.setCliente(cliente);
+            }
+            
             larm.add(arm);
         }
+        rs.close();
+        comando.close();
+        con.close();
+        
         return larm;
     }
 }

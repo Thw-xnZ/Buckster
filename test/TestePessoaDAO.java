@@ -65,6 +65,7 @@ public class TestePessoaDAO {
         }
         */
         
+        /* Consultar Usuario
         Usuario usuario = dao.consultarUsuario(2);
         
         if (usuario != null) {
@@ -74,6 +75,76 @@ public class TestePessoaDAO {
             System.out.println("Nome: " + usuario.getNome());
             System.out.println("Email: " + usuario.getEmail());
             System.out.println("Login: " + usuario.getLogin());
+        } else {
+            System.out.println("Usuario não encontrado.");
+        }
+        */
+        
+        /* Atualiza os dados do cliente
+        Cliente cliente = dao.consultarCliente(1);
+
+        if (cliente != null) {
+
+            // Altera os dados
+            cliente.setNome("João Atualizado");
+            cliente.setCurso("Desenvolvimento de Sistemas");
+            cliente.setTelefone("11988887777");
+
+            // Atualiza no banco
+            dao.atualizar(cliente);
+
+            System.out.println("Cliente atualizado com sucesso!");
+
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+        */
+        
+        /* Atualiza os dados do Usuario
+        Usuario usuario = dao.consultarUsuario(2);
+
+        if (usuario != null) {
+
+            usuario.setNome("Administrador Atualizado");
+            usuario.setEmail("admin.atualizado@buckster.com");
+            usuario.setLogin("admin atualizado");
+            usuario.setSenha("654321");
+
+            dao.atualizar(usuario);
+
+            System.out.println("Usuário atualizado com sucesso!");
+
+        } else {
+            System.out.println("Usuário não encontrado.");
+        }
+        */
+
+        /*
+        // Exclui os dados do cliente
+        Cliente cliente = dao.consultarCliente(1);
+
+        if (cliente != null) {
+
+            // Exclui o cliente
+            dao.excluir(cliente);
+
+            System.out.println("Cliente excluído com sucesso!");
+
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+        */
+        
+        // Exclui os dados do Usuario
+        Usuario usuario = dao.consultarUsuario(2);
+
+        if (usuario != null) {
+
+            // Exclui o cliente
+            dao.excluir(usuario);
+
+            System.out.println("Usuario excluído com sucesso!");
+
         } else {
             System.out.println("Usuario não encontrado.");
         }
